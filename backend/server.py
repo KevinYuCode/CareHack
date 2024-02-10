@@ -30,6 +30,7 @@ def get_response():
     return {"response" : res}
 
 
+
 # To get suggestions and their contents
 @app.route("/suggestions", methods=["POST"])
 @cross_origin()
