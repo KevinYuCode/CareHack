@@ -50,7 +50,7 @@ def questions(symptoms, question):
     
     openai.api_key =openai_key
 
-    msg = str(symptoms) + "Answer this question from the perspective of you being the patient: " + question
+    msg = str(symptoms) + "Answer this question from the perspective of you being the patient, pretend to take a persona of someone with these symptoms (Don't say the disease in your answer): " + question
 
     response = openai.Completion.create(
         engine="gpt-3.5-turbo-instruct",
@@ -59,9 +59,9 @@ def questions(symptoms, question):
     )
 
     res = response['choices'][0]['text']
-    res_array = res.split('\n')
-    res_array = [step.strip() for step in res_array if step.strip()]
-    return res_array
+    # res_array = res.split('\n')
+    # res_array = [step.strip() for step in res_array if step.strip()]
+    return res
 
 
 if __name__ == '__main__':
@@ -70,5 +70,5 @@ if __name__ == '__main__':
     print("symptoms:", symptoms)
     print("\ndisease:", disease)
     
-    response = questions(symptoms, "Are your toes falling off?")
+    response = questions(symptoms, "Is your skin blue?")
     print(response)
