@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import MagnifyGlass from "../assets/MagnifyGlass.png";
-import MagnifyGlassBlack from "../assets/MagnifyGlassBlack.png";
+import MagnifyGlass from "../assets/microphone.png";
+import MagnifyGlassBlack from "../assets/microphone.png";
 import { motion } from "framer-motion";
 
 import "../styles/searchIcon.css";
@@ -23,9 +23,17 @@ function SearchIcon({ scrollTo }) {
       className="search-content flex justify-center items-center fixed bottom-[30px] right-[30px] p-[1rem] rounded-full"
     >
       {hovered ? (
-        <motion.img className="w-[20px] lg:w-[30px]" src={MagnifyGlass} alt="Magnify Glasss" />
+        <img
+          className="w-[20px] lg:w-[30px]"
+          src={MagnifyGlass}
+          alt="Magnify Glasss"
+        />
       ) : (
-        <motion.img className="w-[20px] lg:w-[30px]" src={MagnifyGlassBlack} alt="Magnify Glasss" />
+        <img
+          className="w-[20px] lg:w-[30px]"
+          src={MagnifyGlassBlack}
+          alt="Magnify Glasss"
+        />
       )}
     </motion.button>
   );

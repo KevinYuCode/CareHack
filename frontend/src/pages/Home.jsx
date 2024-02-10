@@ -9,11 +9,12 @@ function Home({
   chatLog,
   condition,
   setCondition,
+  scrollTo,
 }) {
   return (
     <section
       id="Home"
-      className="home flex flex-col items-center justify-between py-[100px] min-h-screen"
+      className="home flex flex-col items-center justify-between py-[50px] min-h-screen"
     >
       <div className="flex flex-col  justify-center items-center">
         {/* <img className="w-[100px]" src={logo} alt="Logo" /> */}
@@ -30,7 +31,9 @@ function Home({
       </div>
 
       <div className=" flex items-center flex-col h-[100%] ">
-        <ChatBox />
+        {/* Chat log */}
+        <ChatBox chatLog={chatLog} scrollTo={scrollTo} />
+
         {/* Text Input */}
         <div className="home-actions flex flex-col items-center w-[1000px] mt-[3rem] relative">
           <motion.input
@@ -39,13 +42,13 @@ function Home({
               setPrompt(e.target.value);
             }}
             placeholder="Ask questions to learn more..."
-            className=" text-center text-1xl lg:text-3xl w-[100%] max-w-[1300px] m-auto py-3 rounded-[15px]"
+            className=" text-center text-1xl lg:text-3xl w-[100%] max-w-[1300px] m-auto py-3 rounded-[15px] pr-[100px]"
           />
 
           {/* Send */}
           <button
             initial={{ border: "2px solid #1d2132" }}
-            className="absolute top-[50%] right-[10px] translate-y-[-50%] px-[20px] py-[10px] rounded-[12px] bg-[#111827] text-[white] hover:bg-[#111827]/90"
+            className="absolute top-[50%] right-[10px] translate-y-[-50%] px-[20px] py-[10px] rounded-[12px] bg-[#111827] text-[white] hover:bg-[#111827]/90 "
             onClick={() => {
               fetchData(prompt);
             }}
