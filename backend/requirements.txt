@@ -2,4 +2,4 @@ flask
 flask-cors
 python-dotenv
 google-search-results
-openai
+openai==0.8.0
