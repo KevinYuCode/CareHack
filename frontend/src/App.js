@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
+import "./global.css";
 import Home from "./pages/Home";
-import Response from "./pages/Response";
-import Recommendations from "./pages/Recommendations";
-import SearchIcon from "./components/SearchIcon";
 import { animateScroll as scroll } from "react-scroll";
 
 function App() {
   const [prompt, setPrompt] = useState(null);
-  const [data, setData] = useState(null);
-  const [suggestions, setSuggestions] = useState(null);
   const [lazySuggestions, setLazySuggestions] = useState(null);
+  const [condition, setCondition] = useState("");
+  const [questionCount, setQuestionCount] = useState(0);
+  const [chatLog, setChatLog] = useState([]);
 
   const scrollTo = (pageId) => {
     let page = document.getElementById(pageId);
@@ -18,13 +17,12 @@ function App() {
     scroll.scrollTo(page.offsetTop);
   };
 
+  // used to send prompt and get responses
   const fetchData = (prompt) => {
     if (prompt === "") {
       alert("Please enter a non-empty prompt.");
       return;
     }
-    setData(null);
-    setSuggestions(null);
 
     // Gets the lazy loading message tip
     fetch("/loading", {
@@ -35,55 +33,50 @@ function App() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(
-          " ------------------- RECOMMENDED TOPICS -------------------"
-        );
-        console.log(data);
         setLazySuggestions(data.tip);
       });
 
     // Get Response for prompt
+    setChatLog(...chatLog, prompt);
+
     fetch("/response", {
-      method: "POST", // 'PUT'
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ prompt }),
+      body: { prompt: prompt, symptoms: chatLog[0] },
     })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        console.log(data);
-        setData(data.response);
+        setChatLog(...chatLog, data.response);
         setLazySuggestions(null);
-
-        setTimeout(() => {
-          scrollTo("Response"); //Scroll to the suggestion
-        }, 200);
-      });
-
-    // Getting more suggestions
-    fetch("/suggestions", {
-      method: "POST", // or 'PUT'
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ prompt }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("SECOND CALL");
-
-        console.log(data);
-        console.log(data.suggestions);
-        setSuggestions(data.suggestions);
       });
   };
+  
+  useEffect(() => {
+    // when clicking "ready" button
+    const fetchInit = () => {
+      fetch("/init", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setChatLog(...chatLog, data.symptoms);
+          setCondition(data.disease);
+        });
+    };
+    // Get the initial prompt from openAI/(patient)
+    fetchInit();
+  }, []);
 
-  const recommendedPrompt = (title, description) => {
-    setData(description);
-    setPrompt(title);
-  };
+  // const recommendedPrompt = (title, description) => {
+  //   setData(description);
+  //   setPrompt(title);
+  // };
   return (
     <div className="App bg-[#F1F1F1] min-h-screen">
       <Home
@@ -91,22 +84,25 @@ function App() {
         setPrompt={setPrompt}
         scrollTo={scrollTo}
         fetchData={fetchData}
-        suggestions={suggestions}
-        data={data}
         lazySuggestions={lazySuggestions}
+        setQuestionCount={setQuestionCount}
+        questionCount={questionCount}
+        condition={condition}
+        setCondition={setCondition}
+        setChatLog={setChatLog}
+        chatLog={chatLog}
       />
-      {data && (
-        <>
-          <Response prompt={prompt} scrollTo={scrollTo} data={data} />
-          <Recommendations
+      {/* {data && ( */}
+        {/* <> */}
+          {/* <Response prompt={prompt} scrollTo={scrollTo} data={data} /> */}
+          {/* <Recommendations
             suggestions={suggestions}
             scrollTo={scrollTo}
             data={data}
-            recommendedPrompt={recommendedPrompt}
-          />
-        </>
-      )}
-      <SearchIcon scrollTo={scrollTo} />
+            // recommendedPrompt={recommendedPrompt}
+          /> */}
+        {/* </> */}
+      {/* )} */}
     </div>
   );
 }
