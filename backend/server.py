@@ -3,7 +3,7 @@ import random
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from dotenv import load_dotenv
-from roleplay import main
+from roleplay import disease_symptoms, questions
 
 load_dotenv()
 app = Flask(__name__, static_url_path="", static_folder='./build', template_folder='build')
@@ -19,15 +19,17 @@ def frontend():
 
 @app.route("/init", methods=["GET"])
 def get_init():
-    return {"response": main()}
+    symptoms, disease = disease_symptoms()
+    return {"symptoms": symptoms, "disease": disease}
 
 # Generic route to prompt GPT and return response
 # Requires: json data: {"prompt" : "A chatGPT prompt"}
 @app.route("/response", methods=["POST"])
 @cross_origin()
 def get_response():
-    prompt = request.json['prompt']
-    res = None
+    question = request.json['prompt']
+    symptoms = request.json['symptoms']
+    res = questions(symptoms, question)
     # Call whatever function to prompt GPT
     return {"response" : res}
 
