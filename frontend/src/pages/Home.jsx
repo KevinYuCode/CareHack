@@ -41,8 +41,9 @@ function Home({
             onChange={(e) => {
               setPrompt(e.target.value);
             }}
+            value={prompt}
             placeholder="Ask questions to learn more..."
-            className=" text-center text-1xl lg:text-3xl w-[100%] max-w-[1300px] m-auto py-3 rounded-[15px] pr-[100px]"
+            className=" text-center text-1xl lg:text-3xl w-[100%] max-w-[1300px] m-auto py-3 rounded-[15px] pl-[20px] pr-[100px]"
           />
 
           {/* Send */}

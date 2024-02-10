@@ -43,6 +43,7 @@ function App() {
 
     setChatLog([...chatLog, prompt]);
     scrollTo("chatbox");
+    setPrompt("");
 
     // Get Response for prompt
     fetch("/response", {
@@ -57,6 +58,7 @@ function App() {
         console.log(data);
         setChatLog(...chatLog, data.response);
         setLazySuggestions(null);
+        setPrompt("");
       })
       .catch((e) => {
         console.log(e);
@@ -100,7 +102,7 @@ function App() {
         setChatLog={setChatLog}
         chatLog={chatLog}
       />
-      <SearchIcon />
+      <SearchIcon fetchData={fetchData} />
     </div>
   );
 }

@@ -1,41 +1,57 @@
 import React, { useState } from "react";
-import MagnifyGlass from "../assets/microphone.png";
-import MagnifyGlassBlack from "../assets/microphone.png";
-import { motion } from "framer-motion";
-
+import microphone from "../assets/white_microphone.png";
+import audio from "../assets/audio.png";
 import "../styles/searchIcon.css";
-function SearchIcon({ scrollTo }) {
-  let [hovered, setHovered] = useState(true);
+function SearchIcon({ fetchData }) {
+  const recognition = new window.webkitSpeechRecognition();
+  const [listening, setListening] = useState(false);
+  recognition.lang = "en-US";
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    fetchData(transcript);
+  };
+
+  const startTranscription = () => {
+    recognition.start();
+    setListening(true);
+  };
+
+  const stopTranscription = () => {
+    recognition.stop();
+    setListening(false);
+  };
+
   return (
-    <motion.button
-      whileHover={{ scale: 0.97, backgroundColor: "#ffffff" }}
-      transition={{ duration: 0.5 }}
-      initial={{ backgroundColor: "#1d2132" }}
-      onClick={() => {
-        scrollTo("Home");
-      }}
-      onMouseEnter={() => {
-        setHovered(false);
-      }}
-      onMouseLeave={() => {
-        setHovered(true);
-      }}
-      className="search-content flex justify-center items-center fixed bottom-[30px] right-[30px] p-[1rem] rounded-full"
-    >
-      {hovered ? (
-        <img
-          className="w-[20px] lg:w-[30px]"
-          src={MagnifyGlass}
-          alt="Magnify Glasss"
-        />
+    <>
+      {!listening ? (
+        <button
+          className="search-content flex justify-center items-center fixed bottom-[30px] right-[30px] p-[1rem] rounded-full bg-[#1d2132] hover:scale-[1.05] transition-all"
+          onClick={() => {
+            startTranscription();
+          }}
+        >
+          <img
+            className="w-[20px] lg:w-[30px] h-[20px] lg:h-[30px] object-contain"
+            src={microphone}
+            alt="Magnify Glasss"
+          />
+        </button>
       ) : (
-        <img
-          className="w-[20px] lg:w-[30px]"
-          src={MagnifyGlassBlack}
-          alt="Magnify Glasss"
-        />
+        <button
+          className="search-content flex justify-center items-center fixed bottom-[30px] right-[30px] p-[1rem] rounded-full bg-[#1d2132] hover:scale-[1.05] transition-all"
+          onClick={() => {
+            stopTranscription();
+          }}
+        >
+          <img
+            className="w-[20px] lg:w-[30px] h-[20px] lg:h-[30px] object-contain"
+            alt="Magnify Glasss"
+            src={audio}
+          />
+        </button>
       )}
-    </motion.button>
+    </>
   );
 }
 
