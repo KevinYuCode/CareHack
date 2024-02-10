@@ -80,19 +80,18 @@ def get_suggestions():
 @cross_origin()
 def get_loading_prompts():
     tips = [
-        "Show some love to someone in your life!",
-        "Treat yourself with kindness and respect, and avoid self-criticism!", 
-        "Eat a brain-healthy diet to support strong mental health.",
-        "Practice mindfulness and meditation!",
-        "Stay connected to your friends and family.",
-        "Drink lots of water to keep yourself healthy and hydrated.",
-        "We suffer more often in imagination than in reality.",
-        "Do something meaningful each day.",
-        "Don't be disappointed if all you do today is a miniscule task.",
-        "He suffers more than necessary, who suffers before it is necessary."
+        "Every step you take in this training brings you closer to mastery.",
+        "Embrace the learning process; it's the foundation of expertise.",
+        "In every challenge, there is an opportunity to enhance your skills.",
+        "Your dedication to learning today shapes the healthcare of tomorrow.",
+        "Success in patient care begins with continuous learning and improvement.",
+        "Take pride in your commitment to becoming a more proficient medical professional.",
+        "The journey to excellence is paved with persistence and knowledge.",
+        "Knowledge is the key that unlocks the doors to exceptional healthcare.",
+        "Your efforts today will positively impact the lives you touch tomorrow."
     ]
     
-    return {"tip": tips[random.randint(0, 9)]}
+    return {"tip": tips[random.randint(0, 8)]}
 
 
 if __name__ == "__main__":
