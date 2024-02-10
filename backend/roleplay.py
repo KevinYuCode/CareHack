@@ -10,7 +10,7 @@ load_dotenv()
 # Get the OpenAI API key
 openai_key = os.getenv("OPENAI_KEY")
 
-def main():
+def disease_symptoms():
 
     msg = "Pretend to be a patient with a disease and give me a list of 10 symptoms in detailed sentences. Don't specify the symptom of the beginning. Give me this in the format: 'Disease: Symptoms: '"
     # msg = "'Disease: Lyme Disease, Symptoms:', '1. I have a circular red rash on my skin that keeps expanding.', '2. My joints are constantly throbbing and painful.', Answer this question from the perspective of you being the patient: Do you have lyme disease?"
@@ -45,10 +45,30 @@ def main():
         disease = res_array[0]
     return symptoms_list, disease
 
+
+def questions(symptoms, question):
+    
+    openai.api_key =openai_key
+
+    msg = str(symptoms) + "Answer this question from the perspective of you being the patient: " + question
+
+    response = openai.Completion.create(
+        engine="gpt-3.5-turbo-instruct",
+        prompt=msg,
+        max_tokens=1000
+    )
+
+    res = response['choices'][0]['text']
+    res_array = res.split('\n')
+    res_array = [step.strip() for step in res_array if step.strip()]
+    return res_array
+
+
 if __name__ == '__main__':
     # msg = "Say this is a test"
-    symptoms, disease = main()
+    symptoms, disease = disease_symptoms()
     print("symptoms:", symptoms)
     print("\ndisease:", disease)
-
-
+    
+    response = questions(symptoms, "Are your toes falling off?")
+    print(response)
