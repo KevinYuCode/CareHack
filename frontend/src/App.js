@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import Home from "./pages/Home";
 import { animateScroll as scroll } from "react-scroll";
-import SearchIcon from "./components/SearchIcon";
+import SearchIcon from "./components/Microphone";
 function App() {
   const [prompt, setPrompt] = useState(null);
   const [lazySuggestions, setLazySuggestions] = useState(null);

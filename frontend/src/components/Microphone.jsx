@@ -1,26 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import microphone from "../assets/white_microphone.png";
 import audio from "../assets/audio.png";
 import "../styles/searchIcon.css";
 function SearchIcon({ fetchData }) {
-  const recognition = new window.webkitSpeechRecognition();
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = SpeechRecognition ? new SpeechRecognition() : null;
   const [listening, setListening] = useState(false);
-  recognition.lang = "en-US";
-
-  recognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    fetchData(transcript);
-  };
 
   const startTranscription = () => {
-    recognition.start();
+    if (recognition) recognition.start();
+
     setListening(true);
   };
 
   const stopTranscription = () => {
-    recognition.stop();
+    if (recognition) recognition.stop();
     setListening(false);
   };
+
+  useEffect(() => {
+    if (recognition) {
+      recognition.onresult = (event) => {
+        recognition.lang = "en-US";
+        const transcript = event.results[0][0].transcript;
+        fetchData(transcript);
+      };
+    }
+  }, []);
 
   return (
     <>
